@@ -6,26 +6,33 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
-  publish:
+  build-candidate:
     runs-on: ubuntu-latest
-    environment: npm-publish
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+      - name: Bind release tag to current main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          CURRENT_MAIN_SHA="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+          test "$GITHUB_SHA" = "$CURRENT_MAIN_SHA"
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
-      - run: npm install --global npm@11.6.0
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
       - run: pnpm build
-      - name: Pack and publish with provenance
+      - name: Pack and inspect release candidate
         shell: bash
         run: |
           set -euo pipefail
@@ -34,4 +41,55 @@ jobs:
           test "$VERSION" = "$ACTUAL"
           mkdir -p "$RUNNER_TEMP/package"
           pnpm --filter burnbook pack --pack-destination "$RUNNER_TEMP/package"
-          npm publish "$RUNNER_TEMP/package/burnbook-$VERSION.tgz" --provenance --access public
+          node scripts/inspect-cli-tarball.mjs "$RUNNER_TEMP/package/burnbook-$VERSION.tgz"
+      - name: Upload immutable release candidate
+        id: candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: burnbook-cli-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/package/burnbook-*.tgz
+            ${{ runner.temp }}/package/burnbook-*.tgz.sha256
+          if-no-files-found: error
+          retention-days: 7
+      - name: Record candidate digest for approval
+        env:
+          ARTIFACT_DIGEST: ${{ steps.candidate.outputs.artifact-digest }}
+        run: echo "Reviewed artifact digest — $ARTIFACT_DIGEST" >> "$GITHUB_STEP_SUMMARY"
+
+  publish:
+    needs: build-candidate
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.20.0
+          registry-url: https://registry.npmjs.org
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: burnbook-cli-${{ github.sha }}
+          path: ${{ runner.temp }}/package
+      - name: Verify and publish reviewed artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#cli-v}"
+          PACKAGE_DIR="$RUNNER_TEMP/package"
+          TARBALL="$PACKAGE_DIR/burnbook-$VERSION.tgz"
+          CHECKSUM="$TARBALL.sha256"
+          test -f "$TARBALL"
+          test -f "$CHECKSUM"
+          test "$(find "$PACKAGE_DIR" -maxdepth 1 -type f | wc -l | tr -d ' ')" = "2"
+          cd "$PACKAGE_DIR"
+          sha256sum --check --strict "$(basename "$CHECKSUM")"
+          EXPECTED_FILES="$(printf '%s\n' package/LICENSE package/README.md package/dist/index.js package/package.json | LC_ALL=C sort)"
+          ACTUAL_FILES="$(tar -tzf "$TARBALL" | LC_ALL=C sort)"
+          test "$ACTUAL_FILES" = "$EXPECTED_FILES"
+          MANIFEST="$(tar -xOzf "$TARBALL" package/package.json)"
+          node -e 'const p=JSON.parse(process.argv[1]); if(p.name!=="burnbook"||p.version!==process.argv[2]||Object.keys(p.scripts||{}).some(k=>/^(prepublishOnly|prepack|prepare|postpack|publish|postpublish|preinstall|install|postinstall)$/.test(k))) process.exit(1)' "$MANIFEST" "$VERSION"
+          node -e 'const [major,minor]=process.argv[1].split(".").map(Number); if(major<11||(major===11&&minor<5)) process.exit(1)' "$(npm --version)"
+          npm publish "$TARBALL" --provenance --access public
