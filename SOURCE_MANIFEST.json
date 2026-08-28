@@ -4,7 +4,7 @@
   "files": [
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "cc636c81156e7278adaa91d45746f9c961fa2df70706cad8eb2be889473faf88"
+      "sha256": "b85747d857963c9adc524d3e7047f8b1f974b82150109d643a36ef41eb5db721"
     },
     {
       "path": ".github/workflows/release.yml",
@@ -40,7 +40,7 @@
     },
     {
       "path": "packages/cli/package.json",
-      "sha256": "493dce6631184859d13de4864641ec840938cb583c279e472fb9f320aa57fb42"
+      "sha256": "1cdf5ca479304d17ac7f74afedd120b43ce7a92dbef730dad8e259169fab2d47"
     },
     {
       "path": "packages/cli/README.md",
@@ -409,6 +409,10 @@
     {
       "path": "packages/schema/tsconfig.json",
       "sha256": "1a9f0873fec04475a675b9b11b9402a9eca94c930c65a199019538b9f521b861"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "dc02ad248104fba271aa642ca51034301c55ca9ba1547383f1de9a79b5a65138"
     },
     {
       "path": "pnpm-workspace.yaml",

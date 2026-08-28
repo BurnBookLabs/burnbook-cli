@@ -48,6 +48,6 @@
     "@burnbook/schema": "workspace:*",
     "@types/node": "^20",
     "esbuild": "^0.28.1",
-    "undici": "^8.9.0"
+    "undici": "^7.16.0"
   }
 }
