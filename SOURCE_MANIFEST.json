@@ -4,7 +4,7 @@
   "files": [
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "b85747d857963c9adc524d3e7047f8b1f974b82150109d643a36ef41eb5db721"
+      "sha256": "271ad311cf508512a836ca04a4d92712d3b7390b2e8e49d36ebbb55e6995896e"
     },
     {
       "path": ".github/workflows/release.yml",

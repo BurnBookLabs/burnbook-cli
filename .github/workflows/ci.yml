@@ -31,7 +31,9 @@ jobs:
         run: pnpm test
       - name: Run Windows service contract tests
         if: runner.os == 'Windows'
-        run: pnpm --filter burnbook exec vitest run test/platform/cross-platform-services.test.ts
+        run: |
+          pnpm --filter @burnbook/schema build
+          pnpm --filter burnbook exec vitest run test/platform/cross-platform-services.test.ts
       - run: pnpm build
       - name: Install packed artifact
         shell: bash
