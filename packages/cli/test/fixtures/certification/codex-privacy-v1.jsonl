@@ -1,0 +1,3 @@
+{"timestamp":"2026-07-31T12:00:00.000Z","type":"session_meta","payload":{"id":"019abcde-1234-7000-8000-000000000001","cli_version":"0.144.6","cwd":"PRIVATE_PATH_SENTINEL"},"prompt":"PRIVATE_PROMPT_SENTINEL"}
+{"timestamp":"2026-07-31T12:00:01.000Z","type":"turn_context","payload":{"model":"gpt-5.6-codex","command":"PRIVATE_COMMAND_SENTINEL","code":"PRIVATE_CODE_SENTINEL"}}
+{"timestamp":"2026-07-31T12:00:02.000Z","type":"event_msg","payload":{"type":"token_count","response":"PRIVATE_RESPONSE_SENTINEL","diff":"PRIVATE_DIFF_SENTINEL","reasoning":"PRIVATE_REASONING_SENTINEL","tool_payload":{"secret":"PRIVATE_TOOL_SENTINEL"},"info":{"total_token_usage":{"input_tokens":100,"cached_input_tokens":40,"output_tokens":30,"reasoning_output_tokens":10,"total_tokens":130}}}}

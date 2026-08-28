@@ -1,0 +1,14 @@
+{
+  "name": "burnbook-cli-source",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm --filter @burnbook/schema build && pnpm --filter burnbook test"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

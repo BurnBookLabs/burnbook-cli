@@ -1,0 +1,53 @@
+{
+  "name": "burnbook",
+  "version": "0.2.0",
+  "description": "Count the tokens your AI coding agents burn, and prove it. CLI for burnbook.dev.",
+  "license": "MIT",
+  "author": "Burnbook Labs",
+  "homepage": "https://burnbook.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BurnBookLabs/burnbook-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BurnBookLabs/burnbook-cli/issues"
+  },
+  "keywords": [
+    "claude-code",
+    "codex",
+    "tokens",
+    "usage",
+    "cli",
+    "ai"
+  ],
+  "type": "module",
+  "bin": {
+    "burn": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json --noEmit && node build.mjs",
+    "prepack": "npm run build",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@noble/ed25519": "^3.1.0",
+    "commander": "^15.0.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@burnbook/schema": "workspace:*",
+    "@types/node": "^20",
+    "esbuild": "^0.28.1",
+    "undici": "^8.9.0"
+  }
+}

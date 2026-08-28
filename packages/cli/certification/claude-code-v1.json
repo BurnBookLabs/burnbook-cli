@@ -1,0 +1,20 @@
+{
+  "certificationVersion": 1,
+  "suite": "claude-code-v1",
+  "agent": "claude-code",
+  "fixture": "../test/fixtures/certification/claude-code-v1.jsonl",
+  "fixtureSha256": "5f8c8d97dab77e0ef6051440e386ff49039b2c860fc61e9319b4bab8f9e9eab4",
+  "expectedEvidenceSha256": "d2999342dd6b56d7a15c99d61da2cf34b8859ad28b639ff63e106b24d41eeff5",
+  "expectedEvidenceCount": 1,
+  "expectedEventIds": ["v1-5c601fd4782daf8eabd8d017d1af028b"],
+  "forbiddenSentinels": [
+    "PRIVATE_PROMPT_SENTINEL",
+    "PRIVATE_RESPONSE_SENTINEL",
+    "PRIVATE_COMMAND_SENTINEL",
+    "PRIVATE_CODE_SENTINEL",
+    "PRIVATE_PATH_SENTINEL",
+    "PRIVATE_DIFF_SENTINEL",
+    "PRIVATE_REASONING_SENTINEL",
+    "PRIVATE_TOOL_SENTINEL"
+  ]
+}
