@@ -8,7 +8,7 @@
     },
     {
       "path": ".github/workflows/release.yml",
-      "sha256": "f157aafd11e4a74f395b54fd1e282ed811782f39bd2c0c01c74665f8ef91a7da"
+      "sha256": "d987e1d554218609a091b5744a8aecd84241efb6760781f2072d6af744c0d2f3"
     },
     {
       "path": ".gitignore",
@@ -24,7 +24,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "c34fd8fb33cd593ffcd18707e82fb6862b2556f59b352647b3fd9e0127a79779"
+      "sha256": "012806cebb7c946a914347318cf4eaa0a62fbf0deec74f820c8b55615bdd8e33"
     },
     {
       "path": "packages/cli/build.mjs",
@@ -421,6 +421,14 @@
     {
       "path": "README.md",
       "sha256": "ec425fedd8666a1505dabac3d69419bd5000be2f8f05e03710ce4b8984fac6cf"
+    },
+    {
+      "path": "scripts/inspect-cli-tarball.mjs",
+      "sha256": "87efb1e3e7a5c0ecf1612818e6e541fb59a2e81743bcaa5803305ade325ea3f4"
+    },
+    {
+      "path": "scripts/inspect-cli-tarball.test.mjs",
+      "sha256": "3676e44c9aedef2e0c983bb2e47c537a4b0519266e534f84de127ea964bbd2e0"
     },
     {
       "path": "SECURITY.md",
