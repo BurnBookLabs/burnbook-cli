@@ -73,7 +73,7 @@ jobs:
         with:
           name: burnbook-cli-${{ github.sha }}
           path: ${{ runner.temp }}/package
-      - name: Verify and publish reviewed artifact
+      - name: Verify and stage reviewed artifact
         shell: bash
         run: |
           set -euo pipefail
@@ -91,5 +91,5 @@ jobs:
           test "$ACTUAL_FILES" = "$EXPECTED_FILES"
           MANIFEST="$(tar -xOzf "$TARBALL" package/package.json)"
           node -e 'const p=JSON.parse(process.argv[1]); if(p.name!=="burnbook"||p.version!==process.argv[2]||Object.keys(p.scripts||{}).some(k=>/^(prepublishOnly|prepack|prepare|postpack|publish|postpublish|preinstall|install|postinstall)$/.test(k))) process.exit(1)' "$MANIFEST" "$VERSION"
-          node -e 'const [major,minor]=process.argv[1].split(".").map(Number); if(major<11||(major===11&&minor<5)) process.exit(1)' "$(npm --version)"
-          npm publish "$TARBALL" --provenance --access public
+          node -e 'const [major,minor]=process.argv[1].split(".").map(Number); if(major<11||(major===11&&minor<15)) process.exit(1)' "$(npm --version)"
+          npm stage publish "$TARBALL" --provenance --access public
